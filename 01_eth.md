@@ -51,7 +51,7 @@ Turns out over 12 million dollars!
 - Backed by purescript-web3
 
 <center>
-<a href="https://github.com/f-o-a-m/purescript-kitty-monitor">
+<a href="https://f-o-a-m.github.io/purescript-kitty-monitor/">
 <img src="images/kitty-monitor.png" height="400">
 </a>
 </center>
@@ -68,7 +68,7 @@ Turns out over 12 million dollars!
 
 ```javascript
 contract GreedyStorage is owned {
-  uint public m; // automatically generate getM()
+  uint public m; // automatically generate "getter" m()
   event Overidden(address overrider)
   function increase (uint n) onlyOwner returns (uint) {
      m = m + n;
