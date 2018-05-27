@@ -67,13 +67,17 @@ Turns out over 12 million dollars!
 ---
 
 ```javascript
-contract GreedyStorage is owned {
+contract GreedyStorage is Owned {
+
   uint public m; // automatically generate "getter" m()
+
   event Overidden(address overrider)
+
   function increase (uint n) onlyOwner returns (uint) {
      m = m + n;
      return m;
   }
+
   function override (uint n) payable {
     require(msg.value > 100000);  // this is the price
     m = n;
@@ -110,7 +114,6 @@ so for `GreedyStorage` we get
 
 ## Typesafety (on-chain)
 
-- Work underway for strongly typed languages targeting EVM
 - Typesafe EVM language wouldn't necessarily have prevented infamous bugs. We'd need session types or similar.
 - Fundamental problem is call-out from turingcomplete executable to turing complete executable. Type level information not preserved on EVM.
 
