@@ -82,7 +82,7 @@ contract GreedyStorage is owned {
 }
 ```
 
-[edit on remix](https://ethereum.github.io/browser-solidity/#version=soljson-v0.4.19+commit.c4cbbb05.js&optimize=undefined&gist=a90b20b6df66c98f7af2f912952d2b7d)
+[edit on remix](https://ethereum.github.io/browser-solidity/#version=soljson-v0.4.19+commit.c4cbbb05.js&optimize=false&gist=e4e6f665ca0d85dc30b6879e275fd84c)
 
 ---
 
