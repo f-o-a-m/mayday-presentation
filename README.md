@@ -1,10 +1,10 @@
-# recurse-center presentation
+# mayday-presentation
 
-[![Build status](https://travis-ci.org/f-o-a-m/recurse-presentation.svg?branch=master)](https://travis-ci.org/f-o-a-m/recurse-presentation?branch=master)
+[![Build status](https://travis-ci.org/f-o-a-m/mayday-presentation.svg?branch=master)](https://travis-ci.org/f-o-a-m/mayday-presentation?branch=master)
 
 ## View the presentation
 
-[https://f-o-a-m.github.io/recurse-presentation/](https://f-o-a-m.github.io/recurse-presentation/)
+[https://f-o-a-m.github.io/mayday-presentation/](https://f-o-a-m.github.io/mayday-presentation/)
 
 ## How to build
 
