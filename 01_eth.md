@@ -68,16 +68,12 @@ Turns out over 12 million dollars!
 
 ```javascript
 contract GreedyStorage is Owned {
-
   uint public m; // automatically generate "getter" m()
-
-  event Overidden(address overrider)
-
+  event Overidden(address overrider);
   function increase (uint n) onlyOwner returns (uint) {
      m = m + n;
      return m;
   }
-
   function override (uint n) payable {
     require(msg.value > 100000);  // this is the price
     m = n;
