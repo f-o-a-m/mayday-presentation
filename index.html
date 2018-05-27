@@ -98,7 +98,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>Backed by purescript-web3</li>
 </ul>
 <center>
-<a href="https://github.com/f-o-a-m/purescript-kitty-monitor"> <img src="images/kitty-monitor.png" height="400"> </a>
+<a href="https://f-o-a-m.github.io/purescript-kitty-monitor/"> <img src="images/kitty-monitor.png" height="400"> </a>
 </center>
 </section><section id="solidity" class="slide level2">
 <h2>Solidity</h2>
@@ -111,7 +111,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </section><section class="slide level2">
 
 <div class="sourceCode"><pre class="sourceCode javascript"><code class="sourceCode javascript">contract GreedyStorage is owned <span class="op">{</span>
-  uint <span class="kw">public</span> m<span class="op">;</span> <span class="co">// automatically generate getM()</span>
+  uint <span class="kw">public</span> m<span class="op">;</span> <span class="co">// automatically generate &quot;getter&quot; m()</span>
   event <span class="at">Overidden</span>(address overrider)
   <span class="kw">function</span> <span class="at">increase</span> (uint n) onlyOwner <span class="at">returns</span> (uint) <span class="op">{</span>
      m <span class="op">=</span> m <span class="op">+</span> n<span class="op">;</span>
@@ -171,7 +171,12 @@ selector <span class="fu">=</span> take <span class="dv">8</span> <span class="f
 </section><section class="slide level2">
 
 </section></section>
-<section><section id="architecting-an-ethereum-app" class="titleslide slide level1"><h1>Architecting an Ethereum App</h1></section><section id="auto-generated-ffi" class="slide level2">
+<section><section id="architecting-an-ethereum-app" class="titleslide slide level1"><h1>Architecting an Ethereum App</h1></section><section id="what-does-it-look-like" class="slide level2">
+<h2>What does it look like?</h2>
+<center>
+<a href="https://raw.githubusercontent.com/f-o-a-m/mayday-presentation/master/images/foam-architecture.png"> <img src="images/foam-architecture.png" height="450"> </a>
+</center>
+</section><section id="auto-generated-ffi" class="slide level2">
 <h2>Auto-generated FFI</h2>
 <ul>
 <li>Ethereum smart contracts expose an interface</li>
@@ -436,17 +441,15 @@ genericABIEncode <span class="fu">=</span> genericToDataBuilder <span class="fu"
 </section><section id="generator---simple-storage-1" class="slide level2">
 <h2>Generator - Simple Storage</h2>
 <p>Here is the client library generated which is generated from the ABI <a href="#/fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">count ::</span> forall e p <span class="fu">.</span> <span class="dt">IsAsyncProvider</span> p
-      <span class="ot">=&gt;</span> <span class="dt">Address</span>
-      <span class="ot">-&gt;</span> <span class="dt">Maybe</span> <span class="dt">Address</span>
-      <span class="ot">-&gt;</span> <span class="dt">CallMode</span>
-      <span class="ot">-&gt;</span> <span class="dt">Web3</span> p e (<span class="dt">UIntN</span> (<span class="dt">D2</span> <span class="fu">:&amp;</span> <span class="dt">D5</span> <span class="fu">:&amp;</span> <span class="dt">D6</span>))
-
-<span class="ot">setCount ::</span> forall e p <span class="fu">.</span> <span class="dt">IsAsyncProvider</span> p
-         <span class="ot">=&gt;</span> <span class="dt">Maybe</span> <span class="dt">Address</span>
-         <span class="ot">-&gt;</span> <span class="dt">Address</span>
-         <span class="ot">-&gt;</span> <span class="dt">UIntN</span> (<span class="dt">D2</span> <span class="fu">:&amp;</span> <span class="dt">D5</span> <span class="fu">:&amp;</span> <span class="dt">D6</span>)
-         <span class="ot">-&gt;</span> <span class="dt">Web3</span> p e <span class="dt">HexString</span>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot"> count ::</span> forall e 
+        <span class="fu">.</span> <span class="dt">TransactionOptions</span> <span class="dt">NoPay</span> 
+        <span class="ot">-&gt;</span> <span class="dt">ChainCursor</span> 
+        <span class="ot">-&gt;</span> <span class="dt">Web3</span> e (<span class="dt">Either</span> <span class="dt">CallError</span> (<span class="dt">UIntN</span> (<span class="dt">D2</span> <span class="fu">:&amp;</span> <span class="dt">D5</span> <span class="fu">:&amp;</span> <span class="dt">DOne</span> <span class="dt">D6</span>)))
+ 
+<span class="ot"> setCount ::</span> forall e
+           <span class="fu">.</span> <span class="dt">TransactionOptions</span> <span class="dt">Wei</span> 
+           <span class="ot">-&gt;</span> {<span class="ot"> _count ::</span> (<span class="dt">UIntN</span> (<span class="dt">D2</span> <span class="fu">:&amp;</span> <span class="dt">D5</span> <span class="fu">:&amp;</span> <span class="dt">DOne</span> <span class="dt">D6</span>)) } 
+           <span class="ot">-&gt;</span> <span class="dt">Web3</span> e <span class="dt">HexString</span>
 
 <span class="kw">newtype</span> <span class="dt">CountSet</span> <span class="fu">=</span>
   <span class="dt">CountSet</span> {<span class="ot"> _count ::</span> <span class="dt">UIntN</span> (<span class="dt">D2</span> <span class="fu">:&amp;</span> <span class="dt">D5</span> <span class="fu">:&amp;</span> <span class="dt">D6</span>) }</code></pre></div>
@@ -459,18 +462,6 @@ genericABIEncode <span class="fu">=</span> genericToDataBuilder <span class="fu"
 <li>Specially generated types allow for higher levels of abstraction in library.</li>
 </ol>
 </section><section id="generator---how-does-it-work" class="slide level2">
-<h2>Generator - How does it work</h2>
-<p>As an example, take a function call that generates a transaction:</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">type</span> <span class="dt">SetCountFn</span> <span class="fu">=</span> <span class="dt">Tagged</span> (<span class="dt">SProxy</span> <span class="st">&quot;setCount(uint256)&quot;</span>) (<span class="dt">Tuple1</span> (<span class="dt">UIntN</span> (<span class="dt">D2</span> <span class="fu">:&amp;</span> <span class="dt">D5</span> <span class="fu">:&amp;</span> <span class="dt">D6</span>)))
-
-<span class="ot">setCount ::</span> forall e p <span class="fu">.</span> <span class="dt">IsAsyncProvider</span> p
-         <span class="ot">=&gt;</span> <span class="dt">Maybe</span> <span class="dt">Address</span>
-         <span class="ot">-&gt;</span> <span class="dt">Address</span>
-         <span class="ot">-&gt;</span> <span class="dt">UIntN</span> (<span class="dt">D2</span> <span class="fu">:&amp;</span> <span class="dt">D5</span> <span class="fu">:&amp;</span> <span class="dt">D6</span>)
-         <span class="ot">-&gt;</span> <span class="dt">Web3</span> p e <span class="dt">HexString</span>
-setCount x0 x1 x2 <span class="fu">=</span> sendTx x0 x1 noPay ((tagged <span class="fu">$</span> <span class="dt">Tuple1</span> x2)<span class="ot"> ::</span> <span class="dt">SetCountFn</span>)</code></pre></div>
-<p>Notice the <code>noPay</code></p>
-</section><section id="generator---how-does-it-work-1" class="slide level2">
 <h2>Generator - How does it work</h2>
 <ul>
 <li>All templated transaction functions are run with the <code>sendTx</code> method:</li>
